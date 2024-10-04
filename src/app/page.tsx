@@ -1,30 +1,26 @@
 "use client"
-
-
-import Header from "@/header/header";
-import { TableDemo, User } from "@/listUser/listUser";
-import { useState } from "react";
-
-
+import { UserRegister } from "@/components/formUser/formUser";
+import Header from "@/components/header/header";
+import { ListUser } from "@/components/listUser/listUser";
+import React from "react";
 
 
 
 
 export default function Home() {
-const [clientes,setClientes]=useState<User[]>([]);
+  const [users, setUsers] = React.useState<UserRegister[]>([]); 
+
   return (
     <div>
-    <div>
-  <Header />
-    </div>
-    <div>
-      <TableDemo
-      setClientes={setClientes}
-      user={clientes}
-  
+      <Header />
+      <div>
    
+      <ListUser 
+      
+      setUsers={setUsers}
+      user={users}
       />
-    </div>
+      </div>
     </div>
   );
 }

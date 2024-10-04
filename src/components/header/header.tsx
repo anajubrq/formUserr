@@ -1,5 +1,5 @@
 import { useState } from "react"
-import FormUser from "@/formUser/formUser"
+import FormUser from "@/components/formUser/formUser"
 import { Button } from "@/components/ui/button";
 
 export default function Header() {
@@ -7,11 +7,11 @@ export default function Header() {
 
     return (
         
-     <section className=" h-[40px] lg:bg-slate-500" >
+     <section className=" bg-slate-400" >
       <div className="flex justify-between items-center w-full">
-        <h1 className="text-[22px] text-[weight] ml-4 p-2">Posts</h1>
-        <Button className="text-[18px] text-[weight] m-5 p-3 bg-blue-700 text-white" onClick={() => setOpenModal(true)}>
-          +Add Post
+        <h1 className="text-[22px] text-[weight] ml-4 p-2">Users</h1>
+        <Button className="text-[18px] text-[weight] m-5 p-3 bg-blue-700 text-white mr-5 pr-5" onClick={() => setOpenModal(true)}>
+          +Add User
         </Button>
       </div>
       <FormUser isOpen={openModal} 

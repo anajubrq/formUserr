@@ -24,25 +24,24 @@ export interface User {
     street: string;
     dateBith: string; 
 }
-
 export interface ListUserProps {
     user: User[]
     isOpen: boolean,
   setModalOpen:  React.Dispatch<React.SetStateAction<boolean>>
-  setClientes:  React.Dispatch<React.SetStateAction<User[]>>
+
 }
 
 export interface ListTabelaProps {
     user : User[],
-    setClientes: React.Dispatch<React.SetStateAction<User[]>>
+   
 }
 
-export function TableDemo({ user }: ListTabelaProps) {
+export function ListUser({ user }: ListTabelaProps) {
     return (
         <Table>
             <TableCaption>A list of your recent invoices.</TableCaption>
-            <TableHeader>
-                <TableRow>
+            <TableHeader >
+                <TableRow >
                     <TableHead className="w-[100px]">Name</TableHead>
                     <TableHead>CPF</TableHead>
                     <TableHead>CEP</TableHead>
@@ -62,6 +61,10 @@ export function TableDemo({ user }: ListTabelaProps) {
                         <TableCell className="text-right">{singleUser.city}</TableCell>
                         <TableCell className="text-right">{singleUser.street}</TableCell>
                         <TableCell className="text-right">{singleUser.dateBith}</TableCell>
+                        
+             
+
+             
                     </TableRow>
                 ))}
             </TableBody>
