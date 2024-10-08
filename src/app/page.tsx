@@ -1,14 +1,14 @@
 "use client"
-import { UserRegister } from "@/components/formUser/formUser";
+
 import Header from "@/components/header/header";
-import { ListUser } from "@/components/listUser/listUser";
+import { ListUser, User } from "@/components/listUser/listUser";
 import React from "react";
 
 
 
 
 export default function Home() {
-  const [users, setUsers] = React.useState<UserRegister[]>([]); 
+  const [users, setUsers] = React.useState<User[]>([]); 
 
   return (
     <div>
@@ -16,9 +16,8 @@ export default function Home() {
       <div>
    
       <ListUser 
-      
-      setUsers={setUsers}
       user={users}
+      setUsers={setUsers}
       />
       </div>
     </div>

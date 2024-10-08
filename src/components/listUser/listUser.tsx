@@ -22,7 +22,7 @@ export interface User {
     neighborhood: string;
     city: string;
     street: string;
-    dateBith: string; 
+    dateBirth: string; 
 }
 export interface ListUserProps {
     user: User[]
@@ -33,10 +33,12 @@ export interface ListUserProps {
 
 export interface ListTabelaProps {
     user : User[],
+    setUsers: React.Dispatch<React.SetStateAction<User[]>>
    
 }
 
 export function ListUser({ user }: ListTabelaProps) {
+    console.log(user, " user tabela")
     return (
         <Table>
             <TableCaption>A list of your recent invoices.</TableCaption>
@@ -60,7 +62,7 @@ export function ListUser({ user }: ListTabelaProps) {
                         <TableCell className="text-right">{singleUser.neighborhood}</TableCell>
                         <TableCell className="text-right">{singleUser.city}</TableCell>
                         <TableCell className="text-right">{singleUser.street}</TableCell>
-                        <TableCell className="text-right">{singleUser.dateBith}</TableCell>
+                        <TableCell className="text-right">{singleUser.dateBirth}</TableCell>
                         
              
 

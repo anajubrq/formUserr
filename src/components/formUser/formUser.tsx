@@ -69,7 +69,7 @@ export default function FormUser({ isOpen, setModalOpen }: FormUserProps) {
     const userAdaptado = { ...data, id: generateRandomId() }; 
     setUsers((users) => [...users, userAdaptado]); 
     setModalOpen(false);
-    console.log(userAdaptado, "Lista de usuários após a adição");
+    console.log(userAdaptado, "Lista de usuários após a adição, id");
     console.log(users)
     form.reset()
 
