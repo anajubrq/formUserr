@@ -19,7 +19,6 @@ export default function Home() {
       user={users}
       setUsers={setUsers}
       />
-      </div>
     </div>
   );
 }

@@ -10,12 +10,8 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-export const generateRandomId = () => {
-    return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
-};
-
 export interface User {
-    id: string;
+    id?: string;
     name: string;
     cpf: string;
     cep: string;
@@ -41,36 +37,31 @@ export function ListUser({ user }: ListTabelaProps) {
     console.log(user, " user tabela")
     return (
         <Table>
-            <TableCaption>A list of your recent invoices.</TableCaption>
-            <TableHeader >
-                <TableRow >
-                    <TableHead className="w-[100px]">Name</TableHead>
+            <TableCaption>Lista de usuários cadastrados</TableCaption>
+            <TableHeader>
+                <TableRow>
+                    <TableHead className="w-[100px]">Nome</TableHead>
                     <TableHead>CPF</TableHead>
                     <TableHead>CEP</TableHead>
-                    <TableHead className="text-right">Neighborhood</TableHead>
-                    <TableHead className="text-right">City</TableHead>
-                    <TableHead className="text-right">Number</TableHead>
-                    <TableHead className="text-right">Date of birth</TableHead>
+                    <TableHead>Bairro</TableHead>
+                    <TableHead>Cidade</TableHead>
+                    <TableHead>Rua</TableHead>
+                    <TableHead>Data de Nascimento</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {user.map((singleUser) => ( 
-                    <TableRow key={singleUser.id}>
+                {user.map((singleUser, index) => ( 
+                    <TableRow key={singleUser.id || index}>
                         <TableCell className="font-medium">{singleUser.name}</TableCell>
                         <TableCell>{singleUser.cpf}</TableCell>
                         <TableCell>{singleUser.cep}</TableCell>
-                        <TableCell className="text-right">{singleUser.neighborhood}</TableCell>
-                        <TableCell className="text-right">{singleUser.city}</TableCell>
-                        <TableCell className="text-right">{singleUser.street}</TableCell>
-                        <TableCell className="text-right">{singleUser.dateBirth}</TableCell>
-                        
-             
-
-             
+                        <TableCell>{singleUser.neighborhood}</TableCell>
+                        <TableCell>{singleUser.city}</TableCell>
+                        <TableCell>{singleUser.street}</TableCell>
+                        <TableCell>{singleUser.dateBirth}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>
-            
         </Table>
     )
 }

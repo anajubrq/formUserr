@@ -1,4 +1,5 @@
 "use client";
+
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,12 +17,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
-
 interface FormUserProps {
   isOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onAddUser: (user: UserRegister) => void;
 }
+
 const userRegisterSchema = z.object({
+  id: z.string().optional(),
   name: z.string().min(1, { message: 'The name field needs to be filled in' }),
   cpf: z.string().min(1, { message: 'The CPF field needs to be filled in' }),
   cep: z.string().min(1, { message: "The ZIP code field needs to be filled in" }),
@@ -33,19 +36,7 @@ const userRegisterSchema = z.object({
 
 export type UserRegister = z.infer<typeof userRegisterSchema>;
 
-export default function FormUser({ isOpen, setModalOpen }: FormUserProps) {
-  type Inputs = {
-    name: string;
-    cpf: string;
-    cep: string;
-    neighborhood: string;
-    city: string;
-    street: string;
-    dateBirth: string; 
-  };
-
- 
-
+export default function FormUser({ isOpen, setModalOpen, onAddUser }: FormUserProps) {
   const form = useForm<UserRegister>({
     resolver: zodResolver(userRegisterSchema),
     defaultValues: { cep: "", name: "", dateBirth: "", neighborhood: "", street: "", cpf: "", city: "" }
@@ -53,10 +44,9 @@ export default function FormUser({ isOpen, setModalOpen }: FormUserProps) {
 
   const {
     handleSubmit,
-    formState: { isLoading }
+    formState: {  isSubmitting },
   } = form;
 
-  const [users, setUsers] = React.useState<UserRegister[]>([]); 
   const [address, setAddress] = React.useState({ city: '', neighborhood: '', street: '' });
   const [isFieldsDisabled, setIsFieldsDisabled] = React.useState(false);
 
@@ -64,10 +54,10 @@ export default function FormUser({ isOpen, setModalOpen }: FormUserProps) {
     return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data, "esses são meus dados, valor inicial");
+  const onSubmit: SubmitHandler<UserRegister> = (data) => {
+    console.log("Form submitted with data:", data);
     const userAdaptado = { ...data, id: generateRandomId() }; 
-    setUsers((users) => [...users, userAdaptado]); 
+    onAddUser(userAdaptado);
     setModalOpen(false);
     console.log(userAdaptado, "Lista de usuários após a adição, id");
     console.log(users)
@@ -77,7 +67,7 @@ export default function FormUser({ isOpen, setModalOpen }: FormUserProps) {
   
   };
 
-async function handleZipcodeBlur(e: React.FocusEvent<HTMLInputElement>) {
+  async function handleZipcodeBlur(e: React.FocusEvent<HTMLInputElement>) {
     const zipcode = e.target.value;
   
     try {
@@ -95,16 +85,13 @@ async function handleZipcodeBlur(e: React.FocusEvent<HTMLInputElement>) {
       setIsFieldsDisabled(true);
     } catch (error) {
       console.error(error);
-      
     }
   }
-  
-  
 
   if (!isOpen) return null;
 
   return (
-    <section className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-10 ">
+    <section className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-10">
       <div className="flex justify-center items-center w-full h-screen">
         <Card className="w-[350px]">
           <CardHeader>
@@ -185,7 +172,7 @@ async function handleZipcodeBlur(e: React.FocusEvent<HTMLInputElement>) {
                 )} />
 
                 <div className="flex justify-center items-center gap-[40px]">
-                  <Button type="submit" disabled={isLoading} className="mt-4">
+                  <Button type="submit" disabled={isSubmitting} className="mt-4">
                     Submit
                   </Button>
                   <Button type="button" className="mt-4" onClick={() => setModalOpen(false)}>
