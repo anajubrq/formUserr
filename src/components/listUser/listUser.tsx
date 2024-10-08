@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import {
     Table,
     TableBody,
@@ -8,7 +7,11 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import { useState } from "react";
+import { ModalDelete } from "../deletUser/deleteUser";
+import { UserRegister } from "../formUser/formUser";
+import EditUser from "../editUser/editUser";
 
 export interface User {
     id?: string;
@@ -23,9 +26,25 @@ export interface User {
 
 export interface ListTabelaProps {
     user: User[];
+    deletePost: (id: string) => void;
+    
 }
 
-export function ListUser({ user }: ListTabelaProps) {
+export function ListUser({ user, deletePost }: ListTabelaProps) {
+    const [openDelete, setOpenDelete] = useState<string | null>(null);
+    const [postEdit, setPostEdit] = useState<UserRegister | undefined>(undefined);
+
+    const [users, setUsers] = useState<User[]>([]);
+
+
+   const onUpdateUser = (updatedUser: User) => {
+        setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+                user.id === updatedUser.id ? updatedUser : user
+            )
+        );
+    };
+
     return (
         <Table>
             <TableCaption>Lista de usuários cadastrados</TableCaption>
@@ -38,10 +57,11 @@ export function ListUser({ user }: ListTabelaProps) {
                     <TableHead>Cidade</TableHead>
                     <TableHead>Rua</TableHead>
                     <TableHead>Data de Nascimento</TableHead>
+                    <TableHead>Ações</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {user.map((singleUser, index) => ( 
+                {user.map((singleUser, index) => (
                     <TableRow key={singleUser.id || index}>
                         <TableCell className="font-medium">{singleUser.name}</TableCell>
                         <TableCell>{singleUser.cpf}</TableCell>
@@ -50,9 +70,39 @@ export function ListUser({ user }: ListTabelaProps) {
                         <TableCell>{singleUser.city}</TableCell>
                         <TableCell>{singleUser.street}</TableCell>
                         <TableCell>{singleUser.dateBirth}</TableCell>
+                        <TableCell>
+                            <button onClick={() => setPostEdit(singleUser)}>
+                                <img src="/images/edit.png" className="w-[25px]" alt="Edit" />
+                            </button>
+                            {postEdit && (
+                                <EditUser
+                                    isOpen={!!postEdit}
+                                    setModalOpen={() => setPostEdit(undefined)}
+                                    onAddUser={(user) =>  {
+                                        console.log(user)
+                                        onUpdateUser(user);
+                                        setPostEdit(undefined);
+                                    }}
+                                    user={postEdit}
+                                />
+                            )}
+
+                            <button onClick={() => setOpenDelete(singleUser.id)}>
+                                <img src="/images/delete.png" className="w-[20px]" alt="Delete" />
+                            </button>
+                            <ModalDelete
+                                isOpenDelete={openDelete === singleUser.id}
+                                setOpenDelete={() => setOpenDelete(null)}
+                                deletePost={() => {
+                                    if (singleUser.id) {
+                                        deletePost(singleUser.id);
+                                    }
+                                }}
+                            />
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
         </Table>
-    )
+    );
 }

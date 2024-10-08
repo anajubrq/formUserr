@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +20,7 @@ interface FormUserProps {
   isOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onAddUser: (user: UserRegister) => void;
+  user: UserRegister; 
 }
 
 const userRegisterSchema = z.object({
@@ -36,47 +36,53 @@ const userRegisterSchema = z.object({
 
 export type UserRegister = z.infer<typeof userRegisterSchema>;
 
-export default function FormUser({ isOpen, setModalOpen, onAddUser }: FormUserProps) {
+export default function EditUser({ isOpen, setModalOpen, onAddUser, user }: FormUserProps) {
   const form = useForm<UserRegister>({
     resolver: zodResolver(userRegisterSchema),
-    defaultValues: { cep: "", name: "", dateBirth: "", neighborhood: "", street: "", cpf: "", city: "" }
+    defaultValues: user,
   });
 
   const {
     handleSubmit,
-    formState: {  isSubmitting },
+    formState: { isSubmitting },
+    reset
   } = form;
 
   const [address, setAddress] = React.useState({ city: '', neighborhood: '', street: '' });
   const [isFieldsDisabled, setIsFieldsDisabled] = React.useState(false);
 
-  const generateRandomId = () => {
-    return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
-  };
-
   const onSubmit: SubmitHandler<UserRegister> = (data) => {
     console.log("Form submitted with data:", data);
-    const userAdaptado = { ...data, id: generateRandomId() }; 
-    onAddUser(userAdaptado);
+    
+    onAddUser(data); 
     setModalOpen(false);
-    console.log(userAdaptado, "Lista de usuários após a adição, id");
-    
-    form.reset()
+    console.log(data, "Usuário atualizado");
+    reset(); 
+    setAddress({ city: '', neighborhood: '', street: '' }); 
+    setIsFieldsDisabled(false); 
 
-    
-  
+
   };
+
+  
+  React.useEffect(() => {
+    if (!isOpen) {
+      reset();
+      setAddress({ city: '', neighborhood: '', street: '' });
+      setIsFieldsDisabled(false);
+    }
+  }, [isOpen, reset]);
 
   async function handleZipcodeBlur(e: React.FocusEvent<HTMLInputElement>) {
     const zipcode = e.target.value;
-  
+
     try {
       const res = await axios.get(`https://viacep.com.br/ws/${zipcode}/json/`);
-  
+
       if (res.data.erro) {
         throw new Error('CEP não encontrado');
       }
-  
+
       setAddress({
         city: res.data.localidade,
         neighborhood: res.data.bairro,
@@ -95,7 +101,7 @@ export default function FormUser({ isOpen, setModalOpen, onAddUser }: FormUserPr
       <div className="flex justify-center items-center w-full h-screen">
         <Card className="w-[350px]">
           <CardHeader>
-            <CardTitle className="text-[22px]">Add customer</CardTitle>
+            <CardTitle className="text-[22px]">Edit user</CardTitle>
             <CardDescription>Fill in the following information:</CardDescription>
           </CardHeader>
           <CardContent>

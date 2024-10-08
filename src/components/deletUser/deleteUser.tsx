@@ -15,7 +15,7 @@ export function ModalDelete({ isOpenDelete, setOpenDelete, deletePost }: IModalD
       <section className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-50">
         <div className="bg-white p-4 rounded-[13px] shadow-lg flex flex-col justify-center items-center gap-[15px] h-[270px]">
         <img src="/images/delete.png" className="w-[25px]" alt="Delete" />
-          <h1>Are you sure you want to delete this Post?</h1>
+          <h1>Do you really want to delete this user?</h1>
           <div className="flex justify-end mt-4 flex-col gap-[4px]">
             <button
               onClick={() => setOpenDelete(!isOpenDelete)}
