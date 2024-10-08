@@ -27,14 +27,14 @@ export interface User {
 export interface ListTabelaProps {
     user: User[];
     deletePost: (id: string) => void;
+    setUsers: React.Dispatch<React.SetStateAction<User[]>>;
     
 }
 
-export function ListUser({ user, deletePost }: ListTabelaProps) {
+export function ListUser({ user, deletePost, setUsers }: ListTabelaProps) {
     const [openDelete, setOpenDelete] = useState<string | null>(null);
     const [postEdit, setPostEdit] = useState<UserRegister | undefined>(undefined);
 
-    const [users, setUsers] = useState<User[]>([]);
 
 
    const onUpdateUser = (updatedUser: User) => {
@@ -71,6 +71,9 @@ export function ListUser({ user, deletePost }: ListTabelaProps) {
                         <TableCell>{singleUser.street}</TableCell>
                         <TableCell>{singleUser.dateBirth}</TableCell>
                         <TableCell>
+
+
+                            
                             <button onClick={() => setPostEdit(singleUser)}>
                                 <img src="/images/edit.png" className="w-[25px]" alt="Edit" />
                             </button>

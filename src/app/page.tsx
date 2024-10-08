@@ -28,6 +28,7 @@ export default function Home() {
       <Header setOpenModal={handleOpenModal} />
       <ListUser user={users} 
        deletePost={deletePost}
+       setUsers={setUsers}
        
        />
       <FormUser
