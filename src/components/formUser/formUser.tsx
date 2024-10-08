@@ -44,7 +44,8 @@ export default function FormUser({ isOpen, setModalOpen, onAddUser }: FormUserPr
 
   const {
     handleSubmit,
-    formState: {  isSubmitting },
+    formState: { errors, isSubmitting },
+    reset
   } = form;
 
   const [address, setAddress] = React.useState({ city: '', neighborhood: '', street: '' });
@@ -59,13 +60,23 @@ export default function FormUser({ isOpen, setModalOpen, onAddUser }: FormUserPr
     const userAdaptado = { ...data, id: generateRandomId() }; 
     onAddUser(userAdaptado);
     setModalOpen(false);
-    console.log(userAdaptado, "Lista de usuários após a adição, id");
-    console.log(users)
-    form.reset()
-
-    
-  
+    console.log(userAdaptado, "Usuário adicionado");
+    reset(); // Reset the form
+    setAddress({ city: '', neighborhood: '', street: '' }); // Reset the address state
+    setIsFieldsDisabled(false); // Reset the fields disabled state
   };
+
+  React.useEffect(() => {
+    console.log("Form errors:", errors);
+  }, [errors]);
+
+  React.useEffect(() => {
+    if (!isOpen) {
+      reset();
+      setAddress({ city: '', neighborhood: '', street: '' });
+      setIsFieldsDisabled(false);
+    }
+  }, [isOpen, reset]);
 
   async function handleZipcodeBlur(e: React.FocusEvent<HTMLInputElement>) {
     const zipcode = e.target.value;

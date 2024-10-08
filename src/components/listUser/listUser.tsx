@@ -18,23 +18,14 @@ export interface User {
     neighborhood: string;
     city: string;
     street: string;
-    dateBirth: string; 
-}
-export interface ListUserProps {
-    user: User[]
-    isOpen: boolean,
-  setModalOpen:  React.Dispatch<React.SetStateAction<boolean>>
-
+    dateBirth: string;
 }
 
 export interface ListTabelaProps {
-    user : User[],
-    setUsers: React.Dispatch<React.SetStateAction<User[]>>
-   
+    user: User[];
 }
 
 export function ListUser({ user }: ListTabelaProps) {
-    console.log(user, " user tabela")
     return (
         <Table>
             <TableCaption>Lista de usuários cadastrados</TableCaption>
